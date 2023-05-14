@@ -21,7 +21,9 @@ export const makeSequentialRequests = (req, arr, index = 0) => {
         const currentElement = arr[index];
         req(currentElement)
             .then(() => {
-                makeSequentialRequests(req, arr, index + 1);
+                makeSequentialRequests(req, arr, index + 1)
+                    .then(resolve)
+                    .catch(reject);
             })
             .catch(() => {
                 reject(
@@ -31,9 +33,34 @@ export const makeSequentialRequests = (req, arr, index = 0) => {
                 );
             });
     })
-        .then(() => console.log("Поля сделки успешно инициализированы"))
+        .then(() => {
+            console.log("Поля сделки успешно инициализированы");
+        })
         .catch((error) => {
             console.log(error.message);
             setTimeout(makeSequentialRequests(req, arr, index), 0);
         });
+};
+
+export const createBody = (dealFieldsKeys, formsState) => {
+    const body = {
+        title: formsState.title,
+        [dealFieldsKeys[0]["First name"]]: formsState.firstName,
+        [dealFieldsKeys[1]["Last name"]]: formsState.lastName,
+        [dealFieldsKeys[2]["Phone"]]: formsState.phone,
+        [dealFieldsKeys[3]["Email"]]: formsState.email,
+        [dealFieldsKeys[4]["Address"]]: formsState.Address,
+        [dealFieldsKeys[5]["City"]]: formsState.city,
+        [dealFieldsKeys[6]["State"]]: formsState.state,
+        [dealFieldsKeys[7]["Area"]]: formsState.area,
+        [dealFieldsKeys[8]["Zip code"]]: formsState.zipCode,
+        [dealFieldsKeys[9]["Job type"]]: formsState.jobType,
+        [dealFieldsKeys[10]["Job source"]]: formsState.jobSource,
+        [dealFieldsKeys[11]["Job description"]]: formsState.jobDescription,
+        [dealFieldsKeys[12]["Job date"]]: formsState.jobDate,
+        [dealFieldsKeys[13]["Job start time"]]: formsState.jobStart,
+        [dealFieldsKeys[14]["Job end time"]]: formsState.jobEnd,
+        [dealFieldsKeys[15]["Technician"]]: formsState.technician,
+    };
+    return body;
 };

@@ -22,3 +22,8 @@
     display: flex;
     gap: 6px;
 }
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
