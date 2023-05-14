@@ -50,8 +50,8 @@ function ScheduledForm({ onChangeJobDate, onChangeJobStart, onChangeJobEnd, onCh
 
             <Form.Item name="technician">
                 <Select
-                    placeholder="Select technician"
                     options={[
+                        { value: "", label: "Select technician", disabled: true },
                         { value: "Technician 1", label: "Technician 1" },
                         { value: "Technician 2", label: "Technician 2" },
                     ]}

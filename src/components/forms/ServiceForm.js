@@ -37,8 +37,8 @@ function ServiceForm({ handleInputState, onChangeArea }) {
 
                 <Form.Item name="area">
                     <Select
-                        placeholder="Select area"
                         options={[
+                            { value: "", label: "Select area", disabled: true },
                             { value: "Area 1", label: "Area 1" },
                             { value: "Area 2", label: "Area 2" },
                         ]}

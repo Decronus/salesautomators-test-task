@@ -18,8 +18,8 @@ function JobForm({ handleInputState, onChangeJobType, onChangeJobSource }) {
 
             <Form.Item name="jobType">
                 <Select
-                    placeholder="Select job type"
                     options={[
+                        { value: "", label: "Select job type", disabled: true },
                         { value: "Type 1", label: "Type 1" },
                         { value: "Type 2", label: "Type 2" },
                     ]}
@@ -29,8 +29,8 @@ function JobForm({ handleInputState, onChangeJobType, onChangeJobSource }) {
 
             <Form.Item name="jobSource">
                 <Select
-                    placeholder="Select job source"
                     options={[
+                        { value: "", label: "Select job source", disabled: true },
                         { value: "Source 1", label: "Source 1" },
                         { value: "Source 2", label: "Source 2" },
                     ]}

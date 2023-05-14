@@ -18,25 +18,25 @@ function App() {
     const [initLoading, setInitLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [dealFieldsKeys, setDealFieldsKeys] = useState([]);
-    const [formsState, setFormsState] = useState(
-        { title: "" },
-        { firstName: "" },
-        { lastName: "" },
-        { phone: "" },
-        { email: "" },
-        { address: "" },
-        { city: "" },
-        { state: "" },
-        { area: "" },
-        { zipCode: "" },
-        { jobType: "" },
-        { jobSource: "" },
-        { jobDescription: "" },
-        { jobDate: "" },
-        { jobStart: "" },
-        { jobEnd: "" },
-        { technician: "" }
-    );
+    const [formsState, setFormsState] = useState({
+        title: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+        address: "",
+        city: "",
+        state: "",
+        area: "",
+        zipCode: "",
+        jobType: "",
+        jobSource: "",
+        jobDescription: "",
+        jobDate: "",
+        jobStart: "",
+        jobEnd: "",
+        technician: "",
+    });
 
     const handleInputState = (event) => {
         const stateKey = event.target.id.split("_")[1];
@@ -84,7 +84,7 @@ function App() {
     return (
         <div className="App">
             <div className="forms-wrap">
-                <TitleForm handleInputState={(event) => handleInputState(event)} titleValue={formsState.title} />
+                <TitleForm handleInputState={(event) => handleInputState(event)} />
                 <ClientForm handleInputState={(event) => handleInputState(event)} />
                 <JobForm
                     handleInputState={(event) => handleInputState(event)}

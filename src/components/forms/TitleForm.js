@@ -1,7 +1,7 @@
 import { Form, Input } from "antd";
 import { extractValueFromStorage } from "../../utils/functions";
 
-function TitleForm({ handleInputState, titleValue }) {
+function TitleForm({ handleInputState }) {
     return (
         <>
             <Form
@@ -16,7 +16,7 @@ function TitleForm({ handleInputState, titleValue }) {
                 </h3>
 
                 <Form.Item name="title">
-                    <Input placeholder="Job title" onChange={handleInputState} value={titleValue} />
+                    <Input placeholder="Job title" onChange={handleInputState} />
                 </Form.Item>
             </Form>
             <div></div>
