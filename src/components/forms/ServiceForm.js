@@ -1,4 +1,5 @@
 import { Form, Input, Select } from "antd";
+import { extractValueFromStorage } from "../../utils/functions";
 
 function ServiceForm({ handleInputState, onChangeArea }) {
     return (
@@ -6,7 +7,13 @@ function ServiceForm({ handleInputState, onChangeArea }) {
             name="service"
             wrapperCol={{ span: 24 }}
             style={{ width: 280 }}
-            initialValues={{ remember: true }}
+            initialValues={{
+                address: extractValueFromStorage("address"),
+                city: extractValueFromStorage("city"),
+                state: extractValueFromStorage("state"),
+                zipCode: extractValueFromStorage("zipCode"),
+                area: extractValueFromStorage("area"),
+            }}
             autoComplete="off"
         >
             <h3>Service location</h3>

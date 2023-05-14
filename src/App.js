@@ -68,16 +68,22 @@ function App() {
         });
     };
 
+    console.log(formsState);
+    const saveDraft = () => {
+        localStorage.setItem("formsState", JSON.stringify(formsState));
+    };
+
     useEffect(() => {
+        if (localStorage.getItem("formsState")) {
+            setFormsState(JSON.parse(localStorage.getItem("formsState")));
+        }
         prepareDealFields();
     }, []);
-
-    console.log(formsState);
 
     return (
         <div className="App">
             <div className="forms-wrap">
-                <TitleForm handleInputState={(event) => handleInputState(event)} />
+                <TitleForm handleInputState={(event) => handleInputState(event)} titleValue={formsState.title} />
                 <ClientForm handleInputState={(event) => handleInputState(event)} />
                 <JobForm
                     handleInputState={(event) => handleInputState(event)}
@@ -97,12 +103,12 @@ function App() {
             </div>
 
             <div className="button-group">
-                <Button>Save draft</Button>
+                <Button onClick={saveDraft}>Save draft</Button>
                 <Button
                     type="primary"
                     onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
                     disabled={initLoading || !formsState.title || dealAdded}
-                    loading={loading}
+                    loading={loading || initLoading}
                 >
                     {dealAdded ? "Job created" : "Create a job"}
                 </Button>

@@ -12,7 +12,7 @@ export const dealSchema = [
 
     { name: "Job type", field_type: "varchar" },
     { name: "Job source", field_type: "varchar" },
-    { name: "Job description", field_type: "date" },
+    { name: "Job description", field_type: "varchar" },
 
     { name: "Job date", field_type: "date" },
     { name: "Job start time", field_type: "time" },

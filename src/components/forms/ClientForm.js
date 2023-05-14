@@ -1,4 +1,5 @@
 import { Form, Input } from "antd";
+import { extractValueFromStorage } from "../../utils/functions";
 
 function ClientForm({ handleInputState }) {
     return (
@@ -6,7 +7,12 @@ function ClientForm({ handleInputState }) {
             name="client-details"
             wrapperCol={{ span: 24 }}
             style={{ width: 280 }}
-            initialValues={{ remember: true }}
+            initialValues={{
+                firstName: extractValueFromStorage("firstName"),
+                lastName: extractValueFromStorage("lastName"),
+                phone: extractValueFromStorage("phone"),
+                email: extractValueFromStorage("email"),
+            }}
             autoComplete="off"
         >
             <h3>Client details</h3>

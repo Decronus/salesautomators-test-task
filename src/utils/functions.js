@@ -49,7 +49,7 @@ export const createBody = (dealFieldsKeys, formsState) => {
         [dealFieldsKeys[1]["Last name"]]: formsState.lastName,
         [dealFieldsKeys[2]["Phone"]]: formsState.phone,
         [dealFieldsKeys[3]["Email"]]: formsState.email,
-        [dealFieldsKeys[4]["Address"]]: formsState.Address,
+        [dealFieldsKeys[4]["Address"]]: formsState.address,
         [dealFieldsKeys[5]["City"]]: formsState.city,
         [dealFieldsKeys[6]["State"]]: formsState.state,
         [dealFieldsKeys[7]["Area"]]: formsState.area,
@@ -63,4 +63,8 @@ export const createBody = (dealFieldsKeys, formsState) => {
         [dealFieldsKeys[15]["Technician"]]: formsState.technician,
     };
     return body;
+};
+
+export const extractValueFromStorage = (key) => {
+    return localStorage.getItem("formsState") ? JSON.parse(localStorage.getItem("formsState"))[key] : "";
 };

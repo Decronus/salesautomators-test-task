@@ -1,4 +1,5 @@
 import { DatePicker, Form, Select } from "antd";
+import { extractValueFromStorage } from "../../utils/functions";
 
 function ScheduledForm({ onChangeJobDate, onChangeJobStart, onChangeJobEnd, onChangeTechnician }) {
     return (
@@ -6,7 +7,9 @@ function ScheduledForm({ onChangeJobDate, onChangeJobStart, onChangeJobEnd, onCh
             name="scheduled"
             wrapperCol={{ span: 24 }}
             style={{ width: 280 }}
-            initialValues={{ remember: true }}
+            initialValues={{
+                technician: extractValueFromStorage("technician"),
+            }}
             autoComplete="off"
         >
             <h3>Scheduled</h3>
@@ -17,6 +20,7 @@ function ScheduledForm({ onChangeJobDate, onChangeJobStart, onChangeJobEnd, onCh
                     style={{ width: "100%" }}
                     format="YYYY-MM-DD"
                     onChange={onChangeJobDate}
+                    value={extractValueFromStorage("date")}
                 />
             </Form.Item>
 

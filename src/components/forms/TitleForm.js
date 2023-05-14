@@ -1,13 +1,14 @@
 import { Form, Input } from "antd";
+import { extractValueFromStorage } from "../../utils/functions";
 
-function TitleForm({ handleInputState }) {
+function TitleForm({ handleInputState, titleValue }) {
     return (
         <>
             <Form
                 name="title"
                 wrapperCol={{ span: 24 }}
                 style={{ width: 280 }}
-                initialValues={{ remember: true }}
+                initialValues={{ title: extractValueFromStorage("title") }}
                 autoComplete="off"
             >
                 <h3>
@@ -15,7 +16,7 @@ function TitleForm({ handleInputState }) {
                 </h3>
 
                 <Form.Item name="title">
-                    <Input placeholder="Job title" onChange={handleInputState} />
+                    <Input placeholder="Job title" onChange={handleInputState} value={titleValue} />
                 </Form.Item>
             </Form>
             <div></div>
