@@ -105,7 +105,7 @@ function App() {
 
             <div className="button-group">
                 <Button onClick={saveDraft}>Save draft</Button>
-                {initLoading || !formsState.title || dealAdded ? (
+                {!formsState.title ? (
                     <MainButtonWithTooltip
                         onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
                         disabled={initLoading || !formsState.title || dealAdded}
