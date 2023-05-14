@@ -4,26 +4,73 @@ import Queries from "./services/queries.service";
 import { dealSchema } from "./schemas/deal.schema";
 
 function App() {
-    const getRequiredDealFields = (currentDealFields) => {
-        return dealSchema.map((el) => {
+    const getRequiredDealFields = (currentDealFields, dealSchema) => {
+        return dealSchema.filter((el) => {
             const field = currentDealFields.find((f) => f.name === el.name && f.field_type === el.field_type);
-            if (!field) {
-                return el;
-            }
+            return !field;
         });
     };
 
-    useEffect(() => {
-        Queries.getDealFields().then((res) => {
-            console.log(res.data.data);
-            const currentDealFields = res.data.data;
-
-            const requiredDealFields = getRequiredDealFields(currentDealFields);
+    const getDealFieldsKeys = (currentDealFields, requiredDealFields) => {
+        return requiredDealFields.map((el) => {
+            const field = currentDealFields.find((f) => f.name === el.name);
+            return { [field.name]: field.key };
         });
+    };
 
-        // const setDealFieldsReq = dealSchema.map((el) => Queries.setDealField(el));
+    const makeSequentialRequests = (req, arr, index = 0) => {
+        return new Promise((resolve, reject) => {
+            if (index >= arr.length) {
+                resolve();
+                return;
+            }
+            const currentElement = arr[index];
+            req(currentElement)
+                .then(() => {
+                    makeSequentialRequests(req, arr, index + 1);
+                })
+                .catch(() => {
+                    reject(
+                        new Error(
+                            `Ошибка при выполнении запроса с элементом ${JSON.stringify(
+                                arr[index]
+                            )} под индексом ${index}`
+                        )
+                    );
+                });
+        })
+            .then(() => console.log("Все запросы выполнены"))
+            .catch((error) => {
+                console.log("error", error.message);
+                setTimeout(makeSequentialRequests(req, arr, index), 0);
+            });
+    };
+
+    const prepareDealFields = async () => {
+        const getDealFieldsRes = await Queries.getDealFields();
+
+        const currentDealFields = getDealFieldsRes.data.data;
+        console.log(currentDealFields);
+
+        const requiredDealFields = getRequiredDealFields(currentDealFields, dealSchema);
+        console.log("required", requiredDealFields);
+
+        await makeSequentialRequests(Queries.setDealField, requiredDealFields);
+
+        // const setDealFieldsRes = await requiredDealFields.map((el) => {
+        //     return Queries.setDealField(el);
+        // });
+
+        // console.log("setDealFieldsRes", setDealFieldsRes);
+
         // Promise.all(setDealFieldsReq).then(() => console.log("Все промисы исполнены"));
 
+        // const dealFieldsKeys = getDealFieldsKeys(currentDealFields, requiredDealFields);
+        // console.log("keys", dealFieldsKeys);
+    };
+
+    useEffect(() => {
+        prepareDealFields();
         // const body = {
         //     name: "Example",
         //     field_type: "varchar",
