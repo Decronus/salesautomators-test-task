@@ -1,4 +1,9 @@
 export const dealSchema = [
+    { name: "First name", field_type: "varchar" },
+    { name: "Last name", field_type: "varchar" },
+    { name: "Phone", field_type: "phone" },
+    { name: "Email", field_type: "varchar" },
+
     { name: "Address", field_type: "varchar" },
     { name: "City", field_type: "varchar" },
     { name: "State", field_type: "varchar" },
