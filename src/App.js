@@ -10,6 +10,8 @@ import ServiceForm from "./components/forms/ServiceForm";
 import ScheduledForm from "./components/forms/ScheduledForm";
 import { ReloadOutlined } from "@ant-design/icons";
 import TitleForm from "./components/forms/TitleForm";
+import MainButton from "./components/MainButton";
+import MainButtonWithTooltip from "./components/MainButtonWithTooltip";
 
 function App() {
     const [dealAdded, setDealAdded] = useState(false);
@@ -68,7 +70,6 @@ function App() {
         });
     };
 
-    console.log(formsState);
     const saveDraft = () => {
         localStorage.setItem("formsState", JSON.stringify(formsState));
     };
@@ -104,14 +105,21 @@ function App() {
 
             <div className="button-group">
                 <Button onClick={saveDraft}>Save draft</Button>
-                <Button
-                    type="primary"
-                    onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
-                    disabled={initLoading || !formsState.title || dealAdded}
-                    loading={loading || initLoading}
-                >
-                    {dealAdded ? "Job created" : "Create a job"}
-                </Button>
+                {initLoading || !formsState.title || dealAdded ? (
+                    <MainButtonWithTooltip
+                        onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
+                        disabled={initLoading || !formsState.title || dealAdded}
+                        loading={loading || initLoading}
+                        dealAdded={dealAdded}
+                    />
+                ) : (
+                    <MainButton
+                        onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
+                        disabled={initLoading || !formsState.title || dealAdded}
+                        loading={loading || initLoading}
+                        dealAdded={dealAdded}
+                    />
+                )}
                 {dealAdded && <Button type="primary" icon={<ReloadOutlined />} onClick={() => setDealAdded(false)} />}
             </div>
         </div>
