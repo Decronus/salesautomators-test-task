@@ -19,9 +19,4 @@ export const dealSchema = [
     { name: "Job end time", field_type: "time" },
 
     { name: "Technician", field_type: "varchar" },
-    // { name: "Miaimi Technician", field_type: "varchar" },
-    // { name: "Orlando Technician", field_type: "varchar" },
-    // { name: "Houston Technician", field_type: "varchar" },
-    // { name: "Charlotte Technician", field_type: "varchar" },
-    // { name: "Austin Technician", field_type: "varchar" },
 ];

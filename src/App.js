@@ -3,9 +3,16 @@ import "./App.css";
 import Queries from "./services/queries.service";
 import { dealSchema } from "./schemas/deal.schema";
 import { createBody, getDealFieldsKeys, getRequiredDealFields, makeSequentialRequests } from "./utils/functions";
-import { Button, DatePicker, Form, Input, Select } from "antd";
+import { Button } from "antd";
+import ClientForm from "./components/forms/ClientForm";
+import JobForm from "./components/forms/JobForm";
+import ServiceForm from "./components/forms/ServiceForm";
+import ScheduledForm from "./components/forms/ScheduledForm";
+import { ReloadOutlined } from "@ant-design/icons";
+import TitleForm from "./components/forms/TitleForm";
 
 function App() {
+    const [dealAdded, setDealAdded] = useState(false);
     const [initLoading, setInitLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [dealFieldsKeys, setDealFieldsKeys] = useState([]);
@@ -52,11 +59,13 @@ function App() {
         currentDealFields = getDealFieldsSecondRes.data.data;
         setDealFieldsKeys(getDealFieldsKeys(currentDealFields, dealSchema));
     };
-    console.log("dealFieldsKeys", dealFieldsKeys);
 
     const handleAddDeal = (body) => {
         setLoading(true);
-        Queries.addDeal(body).then((res) => setLoading(false));
+        Queries.addDeal(body).then((res) => {
+            setLoading(false);
+            setDealAdded(true);
+        });
     };
 
     useEffect(() => {
@@ -68,172 +77,23 @@ function App() {
     return (
         <div className="App">
             <div className="forms-wrap">
-                <Form
-                    name="title"
-                    wrapperCol={{ span: 24 }}
-                    style={{ width: 280 }}
-                    initialValues={{ remember: true }}
-                    autoComplete="off"
-                >
-                    <h3>Job title</h3>
-
-                    <Form.Item name="title">
-                        <Input placeholder="Job title" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-                </Form>
-                <div></div>
-
-                <Form
-                    name="client-details"
-                    wrapperCol={{ span: 24 }}
-                    style={{ width: 280 }}
-                    initialValues={{ remember: true }}
-                    autoComplete="off"
-                >
-                    <h3>Client details</h3>
-
-                    <div className="form-vert-group">
-                        <Form.Item name="firstName">
-                            <Input placeholder="First name" onChange={(event) => handleInputState(event)} />
-                        </Form.Item>
-
-                        <Form.Item name="lastName">
-                            <Input placeholder="Last name" onChange={(event) => handleInputState(event)} />
-                        </Form.Item>
-                    </div>
-
-                    <Form.Item name="phone">
-                        <Input placeholder="Phone" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-
-                    <Form.Item name="email">
-                        <Input placeholder="Email (optional)" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-                </Form>
-
-                <Form
-                    name="job"
-                    wrapperCol={{ span: 24 }}
-                    style={{ width: 280 }}
-                    initialValues={{ remember: true }}
-                    autoComplete="off"
-                >
-                    <h3>Job details</h3>
-
-                    <Form.Item name="jobType">
-                        <Select
-                            placeholder="Select job type"
-                            options={[{ value: "Type 1", label: "Type 1" }]}
-                            onChange={(value) => setFormsState({ ...formsState, jobType: value })}
-                        />
-                    </Form.Item>
-
-                    <Form.Item name="jobSource">
-                        <Select
-                            placeholder="Select job source"
-                            options={[{ value: "Source 1", label: "Source 1" }]}
-                            onChange={(value) => setFormsState({ ...formsState, jobSource: value })}
-                        />
-                    </Form.Item>
-
-                    <Form.Item name="jobDescription">
-                        <Input.TextArea placeholder="Job description" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-                </Form>
-
-                <Form
-                    name="service"
-                    wrapperCol={{ span: 24 }}
-                    style={{ width: 280 }}
-                    initialValues={{ remember: true }}
-                    autoComplete="off"
-                >
-                    <h3>Service location</h3>
-
-                    <Form.Item name="address">
-                        <Input placeholder="Address" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-
-                    <Form.Item name="city">
-                        <Input placeholder="City" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-
-                    <Form.Item name="state">
-                        <Input placeholder="State" onChange={(event) => handleInputState(event)} />
-                    </Form.Item>
-
-                    <div className="form-vert-group">
-                        <Form.Item name="zipCode">
-                            <Input placeholder="Zip code" onChange={(event) => handleInputState(event)} />
-                        </Form.Item>
-
-                        <Form.Item name="area">
-                            <Select
-                                placeholder="Select area"
-                                options={[
-                                    { value: "Area 1", label: "Area 1" },
-                                    { value: "Area 2", label: "Area 2" },
-                                ]}
-                                style={{ width: 140 }}
-                                onChange={(value) => setFormsState({ ...formsState, area: value })}
-                            />
-                        </Form.Item>
-                    </div>
-                </Form>
-
-                <Form
-                    name="scheduled"
-                    wrapperCol={{ span: 24 }}
-                    style={{ width: 280 }}
-                    initialValues={{ remember: true }}
-                    autoComplete="off"
-                >
-                    <h3>Scheduled</h3>
-
-                    <Form.Item name="date">
-                        <DatePicker
-                            placeholder="Choose date"
-                            style={{ width: "100%" }}
-                            format="YYYY-MM-DD"
-                            onChange={(event, date) => setFormsState({ ...formsState, jobDate: date })}
-                        />
-                    </Form.Item>
-
-                    <div className="form-vert-group">
-                        <Form.Item name="jobStart">
-                            <DatePicker
-                                placeholder="Job start"
-                                style={{ width: 137 }}
-                                showTime
-                                picker="time"
-                                format="HH:mm"
-                                onChange={(event, time) => setFormsState({ ...formsState, jobStart: time })}
-                            />
-                        </Form.Item>
-
-                        <Form.Item name="jobEnd">
-                            <DatePicker
-                                placeholder="Job end"
-                                style={{ width: 137 }}
-                                showTime
-                                picker="time"
-                                format="HH:mm"
-                                onChange={(event, time) => setFormsState({ ...formsState, jobEnd: time })}
-                            />
-                        </Form.Item>
-                    </div>
-
-                    <Form.Item name="technician">
-                        <Select
-                            placeholder="Select technician"
-                            options={[
-                                { value: "Technician 1", label: "Technician 1" },
-                                { value: "Technician 2", label: "Technician 2" },
-                            ]}
-                            onChange={(value) => setFormsState({ ...formsState, technician: value })}
-                        />
-                    </Form.Item>
-                </Form>
+                <TitleForm handleInputState={(event) => handleInputState(event)} />
+                <ClientForm handleInputState={(event) => handleInputState(event)} />
+                <JobForm
+                    handleInputState={(event) => handleInputState(event)}
+                    onChangeJobType={(value) => setFormsState({ ...formsState, jobType: value })}
+                    onChangeJobSource={(value) => setFormsState({ ...formsState, jobSource: value })}
+                />
+                <ServiceForm
+                    handleInputState={(event) => handleInputState(event)}
+                    onChangeArea={(value) => setFormsState({ ...formsState, area: value })}
+                />
+                <ScheduledForm
+                    onChangeJobDate={(event, date) => setFormsState({ ...formsState, jobDate: date })}
+                    onChangeJobStart={(event, time) => setFormsState({ ...formsState, jobStart: time })}
+                    onChangeJobEnd={(event, time) => setFormsState({ ...formsState, jobEnd: time })}
+                    onChangeTechnician={(value) => setFormsState({ ...formsState, technician: value })}
+                />
             </div>
 
             <div className="button-group">
@@ -241,11 +101,12 @@ function App() {
                 <Button
                     type="primary"
                     onClick={() => handleAddDeal(createBody(dealFieldsKeys, formsState))}
-                    disabled={initLoading || !formsState.title}
+                    disabled={initLoading || !formsState.title || dealAdded}
                     loading={loading}
                 >
-                    Create a deal
+                    {dealAdded ? "Job created" : "Create a job"}
                 </Button>
+                {dealAdded && <Button type="primary" icon={<ReloadOutlined />} onClick={() => setDealAdded(false)} />}
             </div>
         </div>
     );
