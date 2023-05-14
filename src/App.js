@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Queries from "./services/queries.service";
 import { dealSchema } from "./schemas/deal.schema";
 
 function App() {
+    const [initLoading, setInitLoading] = useState(false);
+
     const getRequiredDealFields = (currentDealFields, dealSchema) => {
         return dealSchema.filter((el) => {
             const field = currentDealFields.find((f) => f.name === el.name && f.field_type === el.field_type);
@@ -11,8 +13,8 @@ function App() {
         });
     };
 
-    const getDealFieldsKeys = (currentDealFields, requiredDealFields) => {
-        return requiredDealFields.map((el) => {
+    const getDealFieldsKeys = (currentDealFields, dealSchema) => {
+        return dealSchema.map((el) => {
             const field = currentDealFields.find((f) => f.name === el.name);
             return { [field.name]: field.key };
         });
@@ -39,34 +41,27 @@ function App() {
                     );
                 });
         })
-            .then(() => console.log("Все запросы выполнены"))
+            .then(() => console.log("Поля сделки успешно инициализированы"))
             .catch((error) => {
-                console.log("error", error.message);
+                console.log(error.message);
                 setTimeout(makeSequentialRequests(req, arr, index), 0);
             });
     };
 
     const prepareDealFields = async () => {
         const getDealFieldsRes = await Queries.getDealFields();
-
-        const currentDealFields = getDealFieldsRes.data.data;
-        console.log(currentDealFields);
+        let currentDealFields = getDealFieldsRes.data.data;
 
         const requiredDealFields = getRequiredDealFields(currentDealFields, dealSchema);
-        console.log("required", requiredDealFields);
+        if (requiredDealFields.length) {
+            await makeSequentialRequests(Queries.setDealField, requiredDealFields);
+        }
 
-        await makeSequentialRequests(Queries.setDealField, requiredDealFields);
+        const getDealFieldsSecondRes = await Queries.getDealFields();
+        currentDealFields = getDealFieldsSecondRes.data.data;
 
-        // const setDealFieldsRes = await requiredDealFields.map((el) => {
-        //     return Queries.setDealField(el);
-        // });
-
-        // console.log("setDealFieldsRes", setDealFieldsRes);
-
-        // Promise.all(setDealFieldsReq).then(() => console.log("Все промисы исполнены"));
-
-        // const dealFieldsKeys = getDealFieldsKeys(currentDealFields, requiredDealFields);
-        // console.log("keys", dealFieldsKeys);
+        const dealFieldsKeys = getDealFieldsKeys(currentDealFields, dealSchema);
+        console.log("dealFieldsKeys", dealFieldsKeys);
     };
 
     useEffect(() => {
