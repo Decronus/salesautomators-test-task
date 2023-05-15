@@ -12,36 +12,6 @@ export const getDealFieldsKeys = (currentDealFields, dealSchema) => {
     });
 };
 
-// export const makeSequentialRequests = (req, arr, index = 0) => {
-//     return new Promise((resolve, reject) => {
-//         if (index >= arr.length) {
-//             resolve();
-//             return;
-//         }
-//         const currentElement = arr[index];
-//         req(currentElement)
-//             .then(() => {
-//                 makeSequentialRequests(req, arr, index + 1)
-//                     .then(resolve)
-//                     .catch(reject);
-//             })
-//             .catch(() => {
-//                 reject(
-//                     new Error(
-//                         `Ошибка при выполнении запроса с элементом ${JSON.stringify(arr[index])} под индексом ${index}`
-//                     )
-//                 );
-//             });
-//     })
-//         .then(() => {
-//             console.log("Поля сделки успешно инициализированы");
-//         })
-//         .catch((error) => {
-//             console.log(error.message);
-//             setTimeout(makeSequentialRequests(req, arr, index), 0);
-//         });
-// };
-
 export const makeSequentialRequests = async (req, arr) => {
     for (let el of arr) {
         await req(el);
