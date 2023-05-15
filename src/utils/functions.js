@@ -14,7 +14,11 @@ export const getDealFieldsKeys = (currentDealFields, dealSchema) => {
 
 export const makeSequentialRequests = async (req, arr) => {
     for (let el of arr) {
-        await req(el);
+        try {
+            await req(el);
+        } catch (error) {
+            await req(el);
+        }
     }
 };
 
